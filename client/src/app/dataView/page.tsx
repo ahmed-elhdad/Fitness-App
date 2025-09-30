@@ -2,7 +2,7 @@
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
 import { useState } from "react";
- const dataView = () => {
+ const DataView = () => {
   const [steps, setSteps] = useState(0);
 
   const handleLogin = async (credentialResponse: CredentialResponse) => {
@@ -35,4 +35,4 @@ import { useState } from "react";
     </div>
   );
 }
-export default dataView;
+export default DataView;
