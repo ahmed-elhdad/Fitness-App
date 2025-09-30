@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { GoogleLogin } from "@react-oauth/google";
-
+import axios from "axios";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -54,7 +54,11 @@ const Register = () => {
 
     if (!formData.age) {
       newErrors.age = "Age is required";
-    } else if (isNaN(formData.age) || formData.age < 13 || formData.age > 120) {
+    } else if (
+      isNaN(formData.age) ||
+      Number(formData.age) < 13 ||
+      Number(formData.age)
+    ) {
       newErrors.age = "Please enter a valid age (13-120)";
     }
 
@@ -62,8 +66,8 @@ const Register = () => {
       newErrors.weight = "Weight is required";
     } else if (
       isNaN(formData.weight) ||
-      formData.weight < 20 ||
-      formData.weight > 300
+      Number(formData.weight) < 20 ||
+      Number(formData.weight) > 300
     ) {
       newErrors.weight = "Please enter a valid weight (20-300 kg)";
     }
@@ -72,8 +76,8 @@ const Register = () => {
       newErrors.height = "Height is required";
     } else if (
       isNaN(formData.height) ||
-      formData.height < 100 ||
-      formData.height > 250
+      Number(formData.height) ||
+      Number(formData.height) > 250
     ) {
       newErrors.height = "Please enter a valid height (100-250 cm)";
     }

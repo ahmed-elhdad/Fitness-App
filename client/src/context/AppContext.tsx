@@ -1,9 +1,9 @@
 "use client";
 
 import React, { createContext } from "react";
-const AppContext = createContext();
-const AppContextProvider = (props) => {
+const AppContextProvider = (props: any) => {
   const value = {};
+  const AppContext = createContext(value);
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
   );
