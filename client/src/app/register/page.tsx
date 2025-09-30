@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+
 interface FormData {
   name: string;
   email: string;
@@ -39,7 +40,9 @@ const Register: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useRouter();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -138,7 +141,7 @@ const Register: React.FC = () => {
         setErrors({ ...errors, email: "Valid Email" });
       }
       if (response.ok) {
-        const data = await response.json();
+        const data = (await response.json()) as unknown;
         console.log("Registration successful:", data);
         alert("Registration successful!");
         setFormData({
@@ -155,15 +158,20 @@ const Register: React.FC = () => {
         console.error("Registration failed:", errorData);
         alert(`Registration failed: ${response.status} ${response.statusText}`);
       }
-    } catch (err: any) {
-      console.error("Network error:", err);
-      alert(`Registration failed: ${err.message}`);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error("Network error:", err);
+        alert(`Registration failed: ${err.message}`);
+      } else {
+        console.error("Unknown error:", err);
+        alert("Registration failed: Unknown error");
+      }
     } finally {
       setIsLoading(false);
     }
   };
-  // Handle google signup
 
+  // Handle google signup
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
     const id_token = credentialResponse.credential;
     console.log("Google ID Token:", id_token);
@@ -176,9 +184,14 @@ const Register: React.FC = () => {
       console.log("Server response:", res.data);
       alert("Login successful!");
     } catch (err) {
-      console.error(err);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error(err);
+      }
     }
   };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -403,10 +416,7 @@ const Register: React.FC = () => {
                 {isLoading ? "Creating Account..." : "Create Account"}
               </button>
             </div>
-
-            {/* Login Link */}
           </form>
-          {/* Submit Button */}
 
           {/* OR Divider */}
           <div className="relative my-6">
