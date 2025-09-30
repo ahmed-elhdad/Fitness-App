@@ -13,7 +13,7 @@ export default function Navbar() {
               Fitness
             </span>
           </a>
-
+          محمود القوط السابع على المدرسة
           <div className="hidden md:flex items-center gap-3">
             <a
               href="login"
