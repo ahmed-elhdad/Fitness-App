@@ -1,29 +1,41 @@
 {
-  "name": "backend",
+  "name": "backend-ts",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
-  "author": "Ahmed mohamed",
+  "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.6.0",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.3",
     "env": "^0.0.2",
     "express": "^5.1.0",
     "express-joi-validations": "^0.1.0",
     "express-limiter": "^1.6.1",
-    "google-auth-library": "^9.15.1",
-    "joi": "^17.13.3",
+    "google-auth-library": "^10.3.1",
+    "install": "^0.13.0",
+    "joi": "^18.0.1",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.17.0",
-    "mongoose": "^8.16.4",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.18.3",
     "multer": "^2.0.2",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "npm": "^11.6.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "googleapis": "^160.0.0"
   }
 }
