@@ -1,9 +1,14 @@
 "use client";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
-import { useState } from "react";
- const DataView = () => {
+import { use, useState } from "react";
+import { AppContext } from "../contexts/AppContext";
+import Loading from "@/components/Loading";
+const DataView = () => {
   const [steps, setSteps] = useState(0);
+  const appContext = use(AppContext);
+  const isLoaded = appContext?.isLoaded ?? false;
+  const setIsLoaded = appContext?.setIsLoaded ?? (() => {});
 
   const handleLogin = async (credentialResponse: CredentialResponse) => {
     try {
@@ -11,28 +16,38 @@ import { useState } from "react";
       if (!token) return;
 
       // إرسال التوكن للـ backend
-      const res = await axios.post("http://localhost:5000/api/fit-data", { token });
+      const res = await axios.post("http://localhost:5000/api/fit-data", {
+        token,
+      });
       setSteps(res.data);
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
+  setTimeout(() => {
+    setIsLoaded(true);
+  }, 2500);
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-3xl font-bold mb-6">Google Fit + Next.js 🚀</h1>
+    <>
+      {isLoaded ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <h1 className="text-3xl font-bold mb-6">Google Fit + Next.js 🚀</h1>
 
-      <GoogleLogin
-        onSuccess={handleLogin}
-        onError={() => console.log("Login Failed")}
-      />
+          <GoogleLogin
+            onSuccess={handleLogin}
+            onError={() => console.log("Login Failed")}
+          />
 
-      {steps && (
-        <pre className="mt-6 p-4 bg-gray-900 text-white rounded">
-          {JSON.stringify(steps, null, 2)}
-        </pre>
+          {steps && (
+            <pre className="mt-6 p-4 bg-gray-900 text-white rounded">
+              {JSON.stringify(steps, null, 2)}
+            </pre>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
-}
+};
 export default DataView;

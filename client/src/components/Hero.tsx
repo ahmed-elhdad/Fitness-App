@@ -6,17 +6,24 @@ export default function Hero() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 sm:py-28 lg:py-32">
         <div className="max-w-2xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900">
-            Transform Your Body, Elevate Your Life
+            Track Your Activity, Transform Your Body, Elevate Your Life
           </h1>
           <p className="mt-6 text-base sm:text-lg text-gray-700 max-w-xl">
-            Personalized workout plans, progress tracking, and expert guidance to help you reach your goals faster.
+            Track your workouts, monitor your progress, and achieve your fitness
+            goals with our comprehensive fitness app designed for all levels.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a href="#signup" className="px-6 py-3 rounded-md bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800">
-              Start Free Trial
+            <a
+              href="#signup"
+              className="px-6 py-3 rounded-md bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800"
+            >
+              Start For Free
             </a>
-            <a href="#programs" className="px-6 py-3 rounded-md border border-gray-300 text-gray-900 text-sm font-medium hover:bg-gray-100">
+            <a
+              href="#programs"
+              className="px-6 py-3 rounded-md border border-gray-300 text-gray-900 text-sm font-medium hover:bg-gray-100"
+            >
               Explore Programs
             </a>
           </div>
@@ -36,5 +43,3 @@ export default function Hero() {
     </section>
   );
 }
-
-

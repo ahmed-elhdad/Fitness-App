@@ -2,12 +2,12 @@ import React from "react";
 
 const features = [
   {
-    title: "Guided Workouts",
+    title: "Track Activity",
     desc: "Follow expertly curated routines for strength, cardio, and mobility.",
   },
   {
-    title: "Meal Plans",
-    desc: "Balanced nutrition guidance tailored to your goals and preferences.",
+    title: "Challenges & Rewards",
+    desc: "Chalange with your friends in the webiste.",
   },
   {
     title: "Progress Tracking",

@@ -12,11 +12,8 @@ export default function CTA() {
                 Join thousands transforming their lives. Start free, cancel anytime.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-4">
-                <a href="#signup" className="px-5 py-3 rounded-md bg-white text-gray-900 text-sm font-semibold hover:bg-gray-100">
+                <a href="register" className="px-5 py-3 rounded-md bg-white text-gray-900 text-sm font-semibold hover:bg-gray-100">
                   Get Started
-                </a>
-                <a href="#pricing" className="px-5 py-3 rounded-md ring-1 ring-inset ring-white/30 text-white text-sm font-medium hover:bg-white/10">
-                  See Pricing
                 </a>
               </div>
             </div>
