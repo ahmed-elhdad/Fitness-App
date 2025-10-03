@@ -1,8 +1,13 @@
+import { Response, Request } from "express";
 import jwt from "jsonwebtoken";
 
 // Express middleware to require a valid JWT for protected routes
 // Looks for a token in the Authorization header (Bearer) or a 'token' cookie
-export default function requireAuth(req, res, next) {
+export default function requireAuth(
+  req: Request,
+  res: Response,
+  next: Function
+) {
   try {
     const authHeader = req.headers?.authorization || "";
     const bearerPrefix = "Bearer ";
@@ -26,7 +31,6 @@ export default function requireAuth(req, res, next) {
     }
 
     const decoded = jwt.verify(token, jwtSecret);
-    req.user = decoded;
     return next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid or expired token" });

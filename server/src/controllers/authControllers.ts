@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User, { userValidation } from "../models/user.js";
+import User, { userValidation } from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
@@ -90,7 +90,7 @@ export const googleLogin = async (req: Request, res: Response) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        avatar: user.avatar,
+        
       },
     });
   } catch (err: any) {

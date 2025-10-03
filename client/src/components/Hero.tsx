@@ -15,7 +15,7 @@ export default function Hero() {
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
-              href="#signup"
+              href="/register"
               className="px-6 py-3 rounded-md bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800"
             >
               Start For Free

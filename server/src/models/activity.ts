@@ -25,9 +25,7 @@ const activitySchema = new mongoose.Schema({
   duration: {
     type: Number,
   },
-  Calories: {
-    type: Number,
-  },
+
 });
 export default mongoose.model("Activity", activitySchema);
 export const activityValidation = Joi.object({

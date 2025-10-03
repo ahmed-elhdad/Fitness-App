@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
-import Joi from "joi";
-
+import Joi, { required } from "joi";
+const date = new Date();
 const userSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
@@ -27,9 +32,10 @@ const userSchema = new mongoose.Schema({
   gender: {
     type: String,
   },
+  friends: [],
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: date.getDay(),
   },
 });
 export default mongoose.model("User", userSchema);
