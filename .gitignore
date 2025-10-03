@@ -6,7 +6,7 @@ npm-debug.log
 yarn-error.log
 
 # Env files
-.env
+*.env
 .env.local
 .env.*.local
 
