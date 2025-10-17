@@ -18,9 +18,9 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <a
               href="login"
-              className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+              className="px-3 cursor-pointer py-2 text-sm font-medium text-gray-700 transition-all rounded hover:bg-gray-100"
             >
-              <button>Log in</button>
+              <button className="cursor-pointer">Log in</button>
             </a>
             <a
               href="/register"

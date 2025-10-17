@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Joi from "joi";
 
-const userChalangeSchema = new mongoose.Schema({
+const ChalangeSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -21,7 +21,7 @@ const userChalangeSchema = new mongoose.Schema({
     required: true,
   },
 });
-export default mongoose.model("UserChalange", userChalangeSchema);
+export default mongoose.model("Chalange", ChalangeSchema);
 export const userChalangeValidation = Joi.object({
   title: Joi.string().trim().min(2).max(200).required(),
   description: Joi.string().trim().max(1000).optional(),
