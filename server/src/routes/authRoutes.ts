@@ -7,16 +7,16 @@ import {
 } from "../validation/user.validation";
 import {
   register,
+  getUsers,
   logIn,
   googleAuth,
   googleLogin,
-  appleAuth,
 } from "../controllers/authControllers";
 
 const router = express.Router();
 
 router.post("/register", validate(registerValidation), register);
-
+router.get("/users", getUsers);
 router.post("/login", validate(loginValidation), logIn);
 router.post("/google-log-in", validate(googleLoginValidation), googleLogin);
 router.post("/google", validate(googleLoginValidation), googleAuth);

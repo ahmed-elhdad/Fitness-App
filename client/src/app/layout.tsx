@@ -15,7 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fitness Tracker",
+  title: {
+    absolute: "Fitness Tracker",
+  },
   description:
     "Fitness Tracker App,build with Next.js, TypeScript, and Tailwind CSS",
 };
@@ -32,7 +34,7 @@ export default function RootLayout({
       >
         <AppContextProvider>
           <GoogleOAuthProvider
-            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+            clientId={process.env.NEXT_GOOGLE_CLIENT_ID as string}
           >
             {children}
           </GoogleOAuthProvider>

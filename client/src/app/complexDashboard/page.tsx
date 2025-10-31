@@ -5,14 +5,16 @@ import { FiEyeOff } from "react-icons/fi";
 const Page = () => {
   const [password, setPassword] = useState(""),
     [success, setSuccess] = useState(false),
-    [showPassword, setShowPassword] = useState(false);
-  useEffect(() => {
+    [showPassword, setShowPassword] = useState(false),
+    [error, setError] = useState("");
+  const checkPassword = () => {
     if (password === "ahmedisauthor") {
       setSuccess(true);
     } else {
       setSuccess(false);
+      setError("Valid Password");
     }
-  }, [password]);
+  };
   return (
     <>
       {success ? (
@@ -77,6 +79,15 @@ const Page = () => {
             >
               {showPassword ? <BsEye /> : <FiEyeOff />}
             </button>
+          </div>
+          <button
+            className="p-3 m-5 transition-all bg-sky-500 hover:bg-sky-400 rounded cursor-pointer text-white font-bold"
+            onClick={checkPassword}
+          >
+            check
+          </button>
+          <div className="bg-red-600 w-50 rounded text-white font-bold">
+            {error}
           </div>
         </center>
       )}

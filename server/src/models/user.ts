@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   friends: [],
+  chalenges: [],
   createdAt: {
     type: Date,
     default: date.getDay(),

@@ -39,6 +39,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "googleapis": "^160.0.0"
+    "googleapis": "^160.0.0",
+    "nodemailer": "^7.0.10"
   }
 }

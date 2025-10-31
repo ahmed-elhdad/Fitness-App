@@ -6,17 +6,17 @@ import { AppContext } from "../contexts/AppContext";
 import Loading from "@/components/Loading";
 const DataView = () => {
   const [steps, setSteps] = useState(0);
-  const appContext = use(AppContext);
-  const isLoaded = appContext?.isLoaded ?? false;
-  const setIsLoaded = appContext?.setIsLoaded ?? (() => {});
+  const { isLoaded, realLoad, setIsLoaded } = use(AppContext);
 
   const handleLogin = async (credentialResponse: CredentialResponse) => {
     try {
-      const token = credentialResponse.credential; // ID Token
+      const token = credentialResponse.credential;
+      console.log("token: ", token);
+
       if (!token) return;
 
       // إرسال التوكن للـ backend
-      const res = await axios.post("http://localhost:5000/api/fit-data", {
+      const res = await axios.post("http://localhost:5000/api/users/getUsers", {
         token,
       });
       setSteps(res.data);
@@ -29,7 +29,7 @@ const DataView = () => {
   }, 2500);
   return (
     <>
-      {isLoaded ? (
+      {realLoad ? (
         <Loading />
       ) : (
         <div className="flex flex-col items-center justify-center h-screen">

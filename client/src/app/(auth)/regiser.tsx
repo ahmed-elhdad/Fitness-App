@@ -3,7 +3,7 @@ import React, { useState, use, ChangeEvent, FormEvent } from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { AppContext } from "../contexts/AppContext";
+import { AppContext } from "../../contexts/AppContext";
 import Loading from "@/components/Loading";
 interface FormData {
   name: string;

@@ -15,15 +15,14 @@ interface AppContextType {
   setIsLogIn: Dispatch<SetStateAction<boolean>>;
   searchPrompt: string;
   setSearchPrompt?: Dispatch<SetStateAction<string>>;
-  chalanges: [];
-  setChalanges?: Dispatch<SetStateAction<[]>>;
+  chalenges: [];
+  setChalenges?: Dispatch<SetStateAction<[]>>;
   realLoad: boolean;
   setRealLoad: Dispatch<SetStateAction<boolean>>;
 }
 interface FetchAnyType {
   url: string;
   method: string;
-  item: [];
   setter: Dispatch<SetStateAction<[]>>;
 }
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -34,7 +33,12 @@ interface AppContextProviderProps {
 const AppContextProvider: React.FC<AppContextProviderProps> = ({
   children,
 }) => {
-  const fetchAny = ({ method, url, setter }: FetchAnyType) => {
+  const [isLoaded, setIsLoaded] = useState(false),
+    [isLogIn, setIsLogIn] = useState(false),
+    [searchPrompt, setSearchPrompt] = useState(""),
+    [chalenges, setChalenges] = useState([]),
+    [realLoad, setRealLoad] = useState(false);
+  const fetchAny = async ({ method, url, setter }: FetchAnyType) => {
     try {
       const res = fetch(url, {
         method: method,
@@ -42,10 +46,10 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
           "Content-Type": "application/json",
         },
       });
-      if (res.pending) {
+      if (await res) {
+        setRealLoad(false);
+      } else {
         setRealLoad(true);
-      }else{
-        setRealLoad(false)
       }
       res
         .then((res) => {
@@ -59,13 +63,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
     }
   };
   useEffect(() => {
-    fetchAny({ url: "/api/chalanges", method: "GET", setter: setChalanges });
+    fetchAny("/api/chalanges", "GET" , setChalenges);
   }, []);
-  const [isLoaded, setIsLoaded] = useState(false),
-    [isLogIn, setIsLogIn] = useState(false),
-    [searchPrompt, setSearchPrompt] = useState(""),
-    [chalanges, setChalanges] = useState([]),
-    [realLoad, setRealLoad] = useState(false);
 
   const value: AppContextType = {
     isLoaded,
@@ -74,8 +73,8 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
     setIsLogIn,
     searchPrompt,
     setSearchPrompt,
-    chalanges,
-    setChalanges,
+    chalenges,
+    setChalenges,
     realLoad,
     setRealLoad,
   };

@@ -3,9 +3,36 @@ import User, { userValidation } from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
-
+import nodemailer from "nodemailer";
+ 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+export const sendEmail = async () => {
+  const email = "ahalhdad2023@gmail.com";
+  const password = "ahmed#$secur";
+  const transporter = nodemailer.createTransport({
+    service: "gmail", // أو تقدر تستخدم host و port بدلاً من service
+    auth: {
+      user: email,
+      pass: password, // أو App Password لو Gmail
+    },
+  });
 
+  const mailOptions = {
+    from: email,
+    to: email,
+    subject: "مرحبا من Nodemailer 🚀",
+    text: "دي رسالة تجريبية من Nodemailer.",
+    html: "<h2>دي رسالة تجريبية <b>بـ HTML</b></h2>",
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("حدث خطأ:", error);
+    } else {
+      console.log("تم إرسال الرسالة:", info.response);
+    }
+  });
+};
 export const register = async (req: Request, res: Response) => {
   try {
     const { error, value } = userValidation.validate(req.body, {
@@ -35,6 +62,7 @@ export const register = async (req: Request, res: Response) => {
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
+    sendEmail()
     const allUsers = await User.find({});
     return res.status(200).json({ users: allUsers });
   } catch (error: any) {
@@ -90,7 +118,6 @@ export const googleLogin = async (req: Request, res: Response) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        
       },
     });
   } catch (err: any) {
@@ -135,20 +162,5 @@ export const googleAuth = async (req: Request, res: Response) => {
     return res
       .status(401)
       .json({ message: "Google authentication failed", error: err.message });
-  }
-};
-
-// Apple:
-export const appleLogIn = async (req: Request, res: Response) => {
-  // Implement Apple login logic here
-  res.status(501).json({ message: "Apple login not implemented yet" });
-};
-
-export const appleAuth = async (req: Request, res: Response) => {
-  try {
-    // Implement Apple authentication logic here
-    res.status(501).json({ message: "Apple authentication not implemented yet" });
-  } catch (error: any) {
-    res.status(500).json({ message: "Apple authentication failed", error: error.message });
   }
 };

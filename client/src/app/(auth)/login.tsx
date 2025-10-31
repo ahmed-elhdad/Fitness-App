@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Loading from "../../components/Loading";
 import { AppContext } from "../contexts/AppContext";
+import Link from "next/link";
 interface FormData {
   email: string;
   password: string;
@@ -80,7 +81,7 @@ const Login: React.FC = () => {
       }
     } catch (error) {
       console.log(error);
-      
+
       setErrors({ email: "Network error" });
     } finally {
       setIsLoading(false);
@@ -234,12 +235,12 @@ const Login: React.FC = () => {
                 <div className="text-center">
                   <p className="text-sm text-gray-600">
                     Don&apos;t have an account?
-                    <a
+                    <Link
                       href="/register"
                       className="font-medium text-gray-900 hover:text-gray-700"
                     >
                       Sign up
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </form>
