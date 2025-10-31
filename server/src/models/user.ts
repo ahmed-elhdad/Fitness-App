@@ -1,12 +1,7 @@
 import mongoose from "mongoose";
-import Joi, { required } from "joi";
+import Joi from "joi";
 const date = new Date();
 const userSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   name: {
     type: String,
     required: true,

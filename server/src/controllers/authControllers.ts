@@ -1,38 +1,69 @@
 import { Request, Response } from "express";
 import User, { userValidation } from "../models/user";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { OAuth2Client } from "google-auth-library";
+import jwt, { JsonWebTokenError } from "jsonwebtoken";
+import { JWT, OAuth2Client } from "google-auth-library";
 import nodemailer from "nodemailer";
- 
+
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-export const sendEmail = async () => {
-  const email = "ahalhdad2023@gmail.com";
-  const password = "ahmed#$secur";
+export const verifyEmail = async (req:Request,res:Response) => {
+  // sendEmail(`Your code is ${randomNumber} do n't share with`, "verify");
+}
+export const sendEmail = async (txt: string, type: string,to:string) => {
   const transporter = nodemailer.createTransport({
     service: "gmail", // أو تقدر تستخدم host و port بدلاً من service
     auth: {
-      user: email,
-      pass: password, // أو App Password لو Gmail
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS, // أو App Password لو Gmail
     },
   });
+  let html = "";
+  if (type == "warning") {
+    html = `
+<div style="max-width: 500px; margin: auto; padding: 20px; background-color: #f9f9f9; 
+            border: 1px solid #ddd; border-radius: 10px; font-family: Arial, sans-serif; 
+            color: #333; text-align: center;">
 
+  <h2 style="color: #4CAF50; font-size: 24px; margin-bottom: 15px;">
+    Fitness Tracker
+  </h2>
+
+  <p style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+    ${txt}
+  </p>
+
+  <button style="background-color: #4CAF50; color: white; padding: 10px 20px; 
+                 border: none; border-radius: 6px; cursor: pointer; font-size: 16px;">
+    arenot you
+  </button>
+
+  <span style="display: block; margin-top: 20px; font-size: 13px; color: #777;">
+    This message has been sent to check if you know about this operation.
+  </span>
+</div>
+`;
+
+}if(type=="verify-email"){
+    const code = Math.floor(1000 + Math.random() * 9000);
+    html = `<div><h2>Fitness Tracker</h2><p>${txt}</p><center>${code}</center><button>arenot you</button><span>if you don't know about this operation <a href=''>change password</a></span></div>`;
+  }
   const mailOptions = {
-    from: email,
-    to: email,
-    subject: "مرحبا من Nodemailer 🚀",
-    text: "دي رسالة تجريبية من Nodemailer.",
-    html: "<h2>دي رسالة تجريبية <b>بـ HTML</b></h2>",
+    from: process.env.EMAIL_USER,
+    to: to,
+    subject: "Fitness Tracker",
+    text: txt,
+    html: html,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error("حدث خطأ:", error);
+      console.error("Error: ", error);
     } else {
-      console.log("تم إرسال الرسالة:", info.response);
+      console.log("send Successfully:", info.response);
     }
   });
 };
+
 export const register = async (req: Request, res: Response) => {
   try {
     const { error, value } = userValidation.validate(req.body, {
@@ -47,12 +78,17 @@ export const register = async (req: Request, res: Response) => {
 
     const existing = await User.findOne({ email: value.email });
     if (existing) {
-      return res.status(409).json({ message: "Email already registered" });
+      return res.status(400).json({ message: "Email already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(value.password, 10);
     const created = await User.create({ ...value, password: hashedPassword });
-    return res.status(201).json({ user: created });
+     const token = jwt.sign(
+       { email: value.email, password: value.password },
+       process.env.JWT_SECRET,
+       { expiresIn: "1h" }
+     );
+    return res.status(201).json({ user: created,jwt:token });
   } catch (err: any) {
     return res
       .status(500)
@@ -62,7 +98,7 @@ export const register = async (req: Request, res: Response) => {
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    sendEmail()
+    verifyEmail;
     const allUsers = await User.find({});
     return res.status(200).json({ users: allUsers });
   } catch (error: any) {
@@ -71,10 +107,32 @@ export const getUsers = async (req: Request, res: Response) => {
       .json({ message: "Error fetching users", error: error.message });
   }
 };
-
 export const logIn = async (req: Request, res: Response) => {
-  // Implement login logic here
-  res.status(501).json({ message: "Login not implemented yet" });
+  const {email,password} = await req.body
+  if (email == ''){
+    res.status(501).json({error:"Valid Name"})
+    return
+  }
+  const exit = User.findOne({email:email})
+  if (!exit) {
+    res.status(404).json({error:"User not exit try to sign up"})
+    return
+  }
+  if (password == "") {
+    res.status(404).json({message:"valid Password"})
+    return
+  }
+  const checkPassword=bcrypt.compare(password,(await exit).password)
+  if (!await checkPassword){
+    res.status(400).json({message:"Valid data Error"})
+    return
+  }
+  const token = jwt.sign(
+      {email: email, password: password },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+  res.status(202).json({ message: "Login implemented",jwt:token });
 };
 
 // Google:
