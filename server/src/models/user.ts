@@ -33,6 +33,11 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: date.getDay(),
   },
+  isVerified:{
+    require:true,
+    default:false,
+    type:Boolean
+  }
 });
 export default mongoose.model("User", userSchema);
 export const userValidation = Joi.object({

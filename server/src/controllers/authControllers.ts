@@ -4,10 +4,29 @@ import bcrypt from "bcryptjs";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { JWT, OAuth2Client } from "google-auth-library";
 import nodemailer from "nodemailer";
-
+import dotenv from "dotenv";
+import user from "../models/user";
+dotenv.config({path:".env.local"});
+const code = Math.floor(1000 + Math.random() * 9000);
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-export const verifyEmail = async (req:Request,res:Response) => {
-  // sendEmail(`Your code is ${randomNumber} do n't share with`, "verify");
+export const verifyEmail = async (req: Request, res: Response) => {
+  // sendEmail(`Your code is ${code} don't share with`, "verify");
+  const { codeNum, email } = req.body;
+  if (code !== codeNum) {
+    res.status(400).json({ message: "Invalid code or not a user" });
+    return;
+  }
+  const exit = await User.findOne({ email });
+  if (!exit) {
+    res.status(404).json({ message: "Not Found User" });
+    return;
+  }
+  const token = jwt.sign(
+    { email: exit.email, password: exit.password },
+    process.env.JWT_SECRET as string,
+    { expiresIn: "1h" }
+  );
+  return res.status(200).json({ message: "Email verified", jwt:token });
 }
 export const sendEmail = async (txt: string, type: string,to:string) => {
   const transporter = nodemailer.createTransport({
@@ -44,7 +63,6 @@ export const sendEmail = async (txt: string, type: string,to:string) => {
 `;
 
 }if(type=="verify-email"){
-    const code = Math.floor(1000 + Math.random() * 9000);
     html = `<div><h2>Fitness Tracker</h2><p>${txt}</p><center>${code}</center><button>arenot you</button><span>if you don't know about this operation <a href=''>change password</a></span></div>`;
   }
   const mailOptions = {
@@ -70,6 +88,11 @@ export const register = async (req: Request, res: Response) => {
       abortEarly: false,
       stripUnknown: true,
     });
+    const token = jwt.sign(
+      { email: value.email, password: value.password },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
     if (error) {
       return res
         .status(400)
@@ -78,16 +101,37 @@ export const register = async (req: Request, res: Response) => {
 
     const existing = await User.findOne({ email: value.email });
     if (existing) {
-      return res.status(400).json({ message: "Email already registered" });
+      res.status(400).json({ message: "Email already registered" });
+      return
     }
-
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER, 
+      pass: process.env.EMAIL_PASS     
+    },
+  });
+  const verificationLink = `${process.env.BASE_URL}/verify/${token}`;
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: value.email,
+    subject: "Fitness Tracker | Verify your email ✔️",
+    html: `
+        <div style="font-family: sans-serif; text-align: center;">
+          <h2>Welcome, ${value.name}!</h2>
+          <p>Please click the button below to verify your account:</p>
+          <a href="${verificationLink}" 
+             style="display: inline-block; background-color: #4CAF50; color: white;
+             padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+             Verify Email ✅
+          </a>
+          <p>If you didn’t request this, just ignore this email.</p>
+        </div>
+      `,
+  });
     const hashedPassword = await bcrypt.hash(value.password, 10);
     const created = await User.create({ ...value, password: hashedPassword });
-     const token = jwt.sign(
-       { email: value.email, password: value.password },
-       process.env.JWT_SECRET,
-       { expiresIn: "1h" }
-     );
+
     return res.status(201).json({ user: created,jwt:token });
   } catch (err: any) {
     return res
