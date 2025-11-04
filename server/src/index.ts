@@ -17,7 +17,6 @@ app.get("/", (req: Request, res: Response) => {
 // Setup Swagger JS
 
 dotenv.config();
-const app = express();
 
 if (process.env.NODE_ENV === "development") {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
