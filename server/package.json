@@ -40,6 +40,8 @@
   },
   "dependencies": {
     "googleapis": "^160.0.0",
-    "nodemailer": "^7.0.10"
+    "nodemailer": "^7.0.10",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

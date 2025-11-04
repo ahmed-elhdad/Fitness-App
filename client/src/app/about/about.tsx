@@ -7,7 +7,7 @@ import {
   FaChartLine,
   FaUserFriends,
 } from "react-icons/fa";
-import { AppContext } from "../contexts/AppContext";
+import { AppContext } from "../contexts/challengeContext";
 import Loading from "../../components/Loading";
 const features = [
   {

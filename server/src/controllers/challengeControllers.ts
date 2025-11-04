@@ -4,7 +4,7 @@ import User from "../models/user";
 import mongoose, { Document } from "mongoose";
 import Joi from "joi";
 import Chalenge from "../models/Chalenge";
-
+import jwt from "jsonwebtoken"
 export const createChalenge = async (req: Request, res: Response) => {
   try {
     // Validate request body
@@ -44,6 +44,12 @@ export const createChalenge = async (req: Request, res: Response) => {
 };
 export const getChalenges = async (req: Request, res: Response) => {
   try {
+    const {token}=await req.body
+    const isValid =jwt.verify(token,process.env.JWT_SECRET)
+    if (!isValid) {
+      res.status(301).json({message:"Valid JWT token"})
+      return
+    }
     const challenges = await Challenge.find({});
     return res.status(200).json({
       message: "Challenges retrieved successfully",

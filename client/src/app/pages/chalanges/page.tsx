@@ -1,6 +1,6 @@
 "use client";
 import React, { use } from "react";
-import { AppContext } from "../../contexts/AppContext";
+import { AppContext } from "../../contexts/challengeContext";
 import SmallLoading from "@/components/SmallLoading";
 import Link from "next/link";
 const Page = () => {

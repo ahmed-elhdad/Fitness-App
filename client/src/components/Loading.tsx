@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AppContext } from "../app/contexts/AppContext";
+import { AppContext } from "../app/contexts/challengeContext";
 
 type AppContextType = {
   isLoaded: boolean;

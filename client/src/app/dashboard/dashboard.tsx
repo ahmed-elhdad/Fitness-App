@@ -2,7 +2,7 @@
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
 import { use, useState } from "react";
-import { AppContext } from "../contexts/AppContext";
+import { AppContext } from "../contexts/challengeContext";
 import Loading from "@/components/Loading";
 import React from "react";
 const Dashboard = () => {

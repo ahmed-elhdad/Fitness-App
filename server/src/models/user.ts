@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Joi from "joi";
+import Joi, { string } from "joi";
 const date = new Date();
 const userSchema = new mongoose.Schema({
   name: {
@@ -16,16 +16,20 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   age: {
+    required:true,
     type: Number,
   },
   weight: {
+    required:true,
     type: Number,
   },
   height: {
+    required:true,
     type: Number,
   },
   gender: {
     type: String,
+    required:true
   },
   friends: [],
   chalenges: [],
@@ -33,8 +37,12 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: date.getDay(),
   },
+  role:{
+    type:String,
+    default:"user",
+  },
   isVerified:{
-    require:true,
+    required:true,
     default:false,
     type:Boolean
   }

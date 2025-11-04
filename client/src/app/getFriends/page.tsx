@@ -2,7 +2,7 @@
 import React, { use, useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { AppContext } from "../contexts/AppContext";
+import { AppContext } from "../contexts/challengeContext";
 import Loading from "@/components/Loading";
 import Image from "next/image";
 

@@ -5,7 +5,7 @@ import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Loading from "../../../components/Loading";
-import { AppContext } from "../../contexts/AppContext";
+import { AppContext } from "../../contexts/challengeContext";
 import Link from "next/link";
 interface FormData {
   email: string;
